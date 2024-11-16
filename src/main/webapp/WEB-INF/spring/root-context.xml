@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- spring bean configuration파일 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	<!-- 
+		DB접속을 위한 클래스 bean으로 등록하기 
+		1. DB접속에 대한 정보를 저장하는 클래스 등록 -> BasicDataSource클래스
+		2. SqlSession을 생성해주는 클래스를 등록 -> SqlSessionFactoryBean클래스
+		3. SqlSession 구현체 클래스 등록 -> SqlSessionTemplate클래스
+	-->
+	<!-- <bean id="dataSource" 
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" 
+		value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" 
+		value="jdbc:oracle:thin:@teacherdev09.kro.kr:8877:xe"/>
+		<property name="username" value="km"/>
+		<property name="password" value="km"/>
+	</bean>
+	
+	<bean id="sqlSesionFactory" 
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+		<property name="mapperLocations" value="classpath:mappers/**/*.xml"/>	
+	</bean>
+	
+	<bean id="sqlSessionTemplate"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSesionFactory"/>	
+	</bean>
+	<bean id="transactionManager" 
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	
+	비밀번호 암호화 클래스 bean으로 등록하기
+	<bean id="bcryptPassword"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/> -->
+</beans>
+
+
+
+
+
+

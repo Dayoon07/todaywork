@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<annotation-driven />
+	
+	<resources mapping="/resources/**" location="/resources/"/>
+
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/"/>
+		<beans:property name="suffix" value=".jsp"/>
+	</beans:bean>
+
+	<context:component-scan base-package="com.km"/>
+	
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="104857560"/>
+	</beans:bean>
+
+	<aop:aspectj-autoproxy/>
+	
+	<!-- 웹소켓연결하기
+		1. 클라이언트와 서버를 연결하는 기능을 하는 클래스를 등록
+		2. 등록한 클래스를 특정주소와 연결해주기 - 핸들러
+		
+	-->
+	<beans:bean id="chattingServer" class="com.km.config.ChattingServer"/>
+	<websocket:handlers>
+		<websocket:mapping handler="chattingServer" path="/chating"/>
+		<websocket:handshake-interceptors>
+			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+	
+</beans:beans>
+
+
+
+
+
+
