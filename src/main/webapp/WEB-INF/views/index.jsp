@@ -27,6 +27,12 @@
 		.other-msg {
 			text-align: left;	
 		}
+		#userList {
+			width: 200px;
+			height: 650px;
+			border: 1px solid black;
+			overflow-y: scroll;
+		}
 	</style>
 </head>
 <body>
@@ -34,11 +40,19 @@
 	
 	<div style="display: flex; width: auto; height: 35px;">
 		<input type="text" id="userid">
+		<input type="hidden" id="receiver">
 		<button onclick="openChatting();">채팅 입장</button>
 	</div>
 	
-	<div id="messageContainer">
+	<div style="display: flex">
+		<div id="messageContainer">
 		
+		</div>
+		<div>
+			<div id="userList">
+				<h3>현재 접속자</h3>
+			</div>
+		</div>
 	</div>
 	
 	<div style="display: flex; justify-content: start; align-items: center;">
@@ -73,6 +87,7 @@
 				switch (message.type) {
 					case "enter" : appendMessage(message); break;
 					case "msg" : printMessage(message); break;
+					case "userList" : printUser(message.data); break;
 				}
 			}
 		}
@@ -83,6 +98,37 @@
 			$h4.innerText = message.data;
 			$h4.style.textAlign = "center";
 			$container.appendChild($h4);
+			
+			/* const $List = document.getElementById("userList");
+			const $user = document.createElement("div");
+			$user.innerText = message.data;
+			$user.style.textAlign = "left";
+			$List.appendChild($user); */
+		}
+		
+		function printUser(list) {
+			const members = JSON.parse(list);
+			console.log(members);
+			
+			/* const ul = members.reduce((prev, next) => prev + `<li>\${ next }</li>`, `</ul>`) + "</ul>";
+			console.log(ul);
+			document.getElementById("userList").innerHTML = ul; */
+			
+			const $ul = document.createElement("ul");
+			members.forEach(e => {
+				const $li = document.createElement("li");
+				$li.innerText = e;
+				$li.addEventListener("click", () => {
+					[...(e.target.parentElement.children)].forEach(e => {
+						e.style.background = "white";
+					});
+					e.target.style.background = "skyblue";
+					document.querySelector("#receiver").value = e.target.innerText;
+				});
+				$ul.appendChild($li);
+			});
+			document.getElementById("userList").innerHTML = "";
+			document.getElementById("userList").appendChild($ul);
 		}
 		
 		function printMessage(message) {
@@ -104,6 +150,9 @@
 			const $textarea = document.querySelector("#sendMessage");
 			const msg = $textarea.value;
 			const userid = document.querySelector("#userid").value;
+			
+			const receiver = document.querySelector("#receiver").value;
+			
 			const sendData = new Message('msg', userid, '', msg);
 			websocket.send(JSON.stringify(sendData));
 		});
